@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      .navigation {
+        margin: 20px 0;
+        text-align: center;
+      }
+
+      .navigation button {
+        margin: 0 10px;
+        padding: 10px 20px;
+        background-color: coral;
+        text-decoration: none;
+        border-radius: 4px;
+        cursor: pointer;
+        border: 2px solid black;
+        transition: background-color 0.3s ease;
+        font-size: 16px;
+        font-weight: bold;
+        color: white;
+      }
+
+      .navigation button:hover {
+        background-color: #ddd;
+      }
+
+      .navigation button:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+
+      #websiteContainer {
+        position: relative;
+        height: 1000px;
+        overflow: hidden;
+      }
+
+      #websiteFrame {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        border: none;
+        overflow: auto;
+      }
+
+      .section-buttons {
+        text-align: center;
+      }
+
+      .section-buttons button {
+        margin: 10px;
+        padding: 10px 20px;
+        background-color: lightseagreen;
+        text-decoration: none;
+        border-radius: 4px;
+        cursor: pointer;
+        border: none;
+        transition: background-color 0.3s ease;
+        font-size: 16px;
+        font-weight: bold;
+        border: 2px solid black;
+      }
+
+      .section-buttons button.active {
+        background-color: red;
+      }
+
+      #taskHeading {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        font-size: 16px;
+        font-weight: bold;
+      }
+      #githubHeading {
+        position: relative;
+        top: 10px;
+        left: 10px;
+        font-size: 16px;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="section-buttons">
+      <h3 class="section-button" style="text-align: left">
+        &emsp;&emsp;&emsp;VIT_VELLORE_20BCE0169&emsp;&emsp;&emsp; 👉
+        <a
+          href="https://github.com/Proj-assignment"
+          target="_blank"
+          style="border: 2px solid black; padding: 10px"
+          >Github Link</a
+        >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <a
+          href="https://github.com/Proj-assignment"
+          target="_blank"
+          style="border: 2px solid black; padding: 10px"
+          >All websites individual links</a
+        >
+      </h3>
+      <button class="section-button" data-section="HTML">HTML</button>
+      <button class="section-button" data-section="CSS">CSS</button>
+      <button class="section-button" data-section="Bootstrap">Bootstrap</button>
+      <button class="section-button" data-section="JavaScript">
+        JavaScript
+      </button>
+      <h2 id="taskHeading"></h2>
+    </div>
+    <div class="navigation">
+      <button id="prevBtn" disabled>Previous</button>
+      <button id="nextBtn">Next</button>
+    </div>
+    <div id="websiteContainer">
+      <iframe id="websiteFrame" src=""></iframe>
+    </div>
+
+    <script>
+      var sectionLinks = {
+        HTML: [
+          "https://proj-assignment.github.io/HTML-1/",
+          "https://proj-assignment.github.io/HTML-2/",
+          "https://proj-assignment.github.io/HTML-3/",
+          "https://proj-assignment.github.io/HTML-4/",
+          "https://proj-assignment.github.io/HTML-5/",
+          "https://proj-assignment.github.io/HTML-6/",
+          "https://proj-assignment.github.io/HTML-7/",
+          "https://proj-assignment.github.io/HTML-8/",
+          "https://proj-assignment.github.io/HTML-9/",
+          "https://proj-assignment.github.io/HTML-10/",
+        ],
+        CSS: [
+          "https://proj-assignment.github.io/CSS-1/",
+          "https://proj-assignment.github.io/CSS-2/",
+          "https://proj-assignment.github.io/CSS-3/",
+          "https://proj-assignment.github.io/CSS-4/",
+          "https://proj-assignment.github.io/CSS-5/",
+          "https://proj-assignment.github.io/CSS-6/",
+          "https://proj-assignment.github.io/CSS-7/",
+          "https://proj-assignment.github.io/CSS-8/",
+          "https://proj-assignment.github.io/CSS-9/",
+          "https://proj-assignment.github.io/CSS-10/",
+          "https://proj-assignment.github.io/CSS-11/",
+          "https://proj-assignment.github.io/CSS-12/",
+        ],
+        Bootstrap: [
+          "https://proj-assignment.github.io/BS-1/",
+          "https://proj-assignment.github.io/BS-2/",
+          "https://proj-assignment.github.io/BS-3/",
+          "https://proj-assignment.github.io/BS-4/",
+          "https://proj-assignment.github.io/BS-5/",
+          "https://proj-assignment.github.io/BS-6/",
+          "https://proj-assignment.github.io/BS-7/",
+          "https://proj-assignment.github.io/BS-8/",
+        ],
+        JavaScript: [
+          "https://proj-assignment.github.io/JS-1/",
+          "https://proj-assignment.github.io/JS-2/",
+          "https://proj-assignment.github.io/JS-3/",
+          "https://proj-assignment.github.io/JS-4/",
+          "https://proj-assignment.github.io/JS-5/",
+          "https://proj-assignment.github.io/JS-6/",
+          "https://proj-assignment.github.io/JS-7/",
+          "https://proj-assignment.github.io/JS-8",
+          "https://proj-assignment.github.io/JS-9/",
+          "https://proj-assignment.github.io/JS-10/",
+        ],
+      };
+
+      var iframe = document.getElementById("websiteFrame");
+      var prevBtn = document.getElementById("prevBtn");
+      var nextBtn = document.getElementById("nextBtn");
+      var taskHeading = document.getElementById("taskHeading");
+      var sectionButtons = document.querySelectorAll(".section-button");
+      var currentSection = "HTML";
+      var pageIndex = 0;
+      function navigateToPage() {
+        iframe.src = sectionLinks[currentSection][pageIndex];
+        prevBtn.disabled = pageIndex === 0;
+        nextBtn.disabled =
+          pageIndex === sectionLinks[currentSection].length - 1;
+
+        var sectionCount = pageIndex + 1;
+        var overallCount = calculateOverallCount();
+        taskHeading.textContent =
+          "Task No: " +
+          sectionCount +
+          " (" +
+          currentSection +
+          ") - Overall: " +
+          overallCount;
+      }
+      function calculateOverallCount() {
+        var overallCount = 0;
+        for (var section in sectionLinks) {
+          overallCount += sectionLinks[section].length;
+        }
+        return overallCount;
+      }
+      function switchSection(section) {
+        currentSection = section;
+        pageIndex = 0;
+        navigateToPage();
+        sectionButtons.forEach(function (button) {
+          button.classList.toggle(
+            "active",
+            button.dataset.section === currentSection
+          );
+        });
+      }
+      sectionButtons.forEach(function (button) {
+        button.addEventListener("click", function () {
+          var section = button.dataset.section;
+          switchSection(section);
+        });
+      });
+      prevBtn.addEventListener("click", function () {
+        if (pageIndex > 0) {
+          pageIndex--;
+          navigateToPage();
+        }
+      });
+      nextBtn.addEventListener("click", function () {
+        if (pageIndex < sectionLinks[currentSection].length - 1) {
+          pageIndex++;
+          navigateToPage();
+        }
+      });
+      navigateToPage();
+    </script>
+  </body>
+</html>
